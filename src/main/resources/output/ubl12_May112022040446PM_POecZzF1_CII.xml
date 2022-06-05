@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<rsm:CrossIndustryInvoice xmlns:ram="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100" xmlns:rsm="urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100" xmlns:udt="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:100" xmlns:qdt="urn:un:unece:uncefact:data:standard:QualifiedDataType:100" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<rsm:CrossIndustryInvoice xmlns:qdt="urn:un:unece:uncefact:data:standard:QualifiedDataType:100" xmlns:rsm="urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100" xmlns:udt="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:100" xmlns:ram="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100">
     <rsm:ExchangedDocumentContext />
     <rsm:ExchangedDocument>
         <ram:ID>TOSL108</ram:ID>
@@ -243,7 +243,7 @@
                     <ram:URIID schemeID="GLN">1234567890123</ram:URIID>
                 </ram:URIUniversalCommunication>
                 <ram:SpecifiedTaxRegistration>
-                    <ram:ID schemeID="VA">DK12345</ram:ID>
+                    <ram:ID schemeID="VAT">DK12345</ram:ID>
                 </ram:SpecifiedTaxRegistration>
             </ram:SellerTradeParty>
             <ram:BuyerTradeParty>
@@ -270,7 +270,7 @@
                     <ram:URIID schemeID="GLN">1234567987654</ram:URIID>
                 </ram:URIUniversalCommunication>
                 <ram:SpecifiedTaxRegistration>
-                    <ram:ID schemeID="VA">BE54321</ram:ID>
+                    <ram:ID schemeID="VAT">BE54321</ram:ID>
                 </ram:SpecifiedTaxRegistration>
             </ram:BuyerTradeParty>
             <ram:BuyerOrderReferencedDocument>
@@ -285,7 +285,6 @@
             </ram:AdditionalReferencedDocument>
             <ram:AdditionalReferencedDocument>
                 <ram:IssuerAssignedID>Doc2</ram:IssuerAssignedID>
-                <ram:AttachmentBinaryObject mimeCode="application/pdf">UjBsR09EbGhjZ0dTQUxNQUFBUUNBRU1tQ1p0dU1GUXhEUzhi</ram:AttachmentBinaryObject>
             </ram:AdditionalReferencedDocument>
         </ram:ApplicableHeaderTradeAgreement>
         <ram:ApplicableHeaderTradeDelivery>
@@ -297,7 +296,7 @@
                     <ram:LineTwo>Side door</ram:LineTwo>
                     <ram:CityName>DeliveryCity</ram:CityName>
                     <ram:CountryID>BE</ram:CountryID>
-                    <ram:CountrySubDivisionName>RegionC</ram:CountrySubDivisionName>
+                    <ram:CountrySubDivisionName />
                 </ram:PostalTradeAddress>
             </ram:ShipToTradeParty>
             <ram:ActualDeliverySupplyChainEvent>
@@ -327,18 +326,6 @@
                 <ram:TypeCode>S</ram:TypeCode>
                 <ram:BasisAmount currencyID="EUR">1460.5</ram:BasisAmount>
             </ram:ApplicableTradeTax>
-            <ram:ApplicableTradeTax>
-                <ram:CalculatedAmount currencyID="EUR">0.1</ram:CalculatedAmount>
-                <ram:TypeCode>AA</ram:TypeCode>
-                <ram:BasisAmount currencyID="EUR">1</ram:BasisAmount>
-            </ram:ApplicableTradeTax>
-            <ram:ApplicableTradeTax>
-                <ram:CalculatedAmount currencyID="EUR">0</ram:CalculatedAmount>
-                <ram:TypeCode>E</ram:TypeCode>
-                <ram:ExemptionReason>Exempt New Means of Transport</ram:ExemptionReason>
-                <ram:BasisAmount currencyID="EUR">-25</ram:BasisAmount>
-                <ram:ExemptionReasonCode>AAM</ram:ExemptionReasonCode>
-            </ram:ApplicableTradeTax>
             <ram:BillingSpecifiedPeriod>
                 <ram:StartDateTime>
                     <udt:DateTimeString format="102">20091101</udt:DateTimeString>
@@ -349,7 +336,7 @@
             </ram:BillingSpecifiedPeriod>
             <ram:SpecifiedTradeAllowanceCharge>
                 <ram:ChargeIndicator>
-                    <udt:Indicator>true</udt:Indicator>
+                    <udt:Indicator>false</udt:Indicator>
                 </ram:ChargeIndicator>
                 <ram:ActualAmount>100</ram:ActualAmount>
                 <ram:Reason>Packing cost</ram:Reason>
