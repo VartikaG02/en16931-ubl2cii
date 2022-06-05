@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rsm:CrossIndustryInvoice xmlns:ram="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100" xmlns:rsm="urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100" xmlns:udt="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:100" xmlns:qdt="urn:un:unece:uncefact:data:standard:QualifiedDataType:100" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <rsm:ExchangedDocumentContext />
+    <rsm:ExchangedDocument>
+        <ram:ID>TOSL108</ram:ID>
+        <ram:TypeCode>380</ram:TypeCode>
+        <ram:IssueDateTime>
+            <udt:DateTimeString format="102">20091215</udt:DateTimeString>
+        </ram:IssueDateTime>
+        <ram:IncludedNote>
+            <ram:Content>Ordered in our booth at the convention.</ram:Content>
+        </ram:IncludedNote>
+    </rsm:ExchangedDocument>
+    <rsm:SupplyChainTradeTransaction>
+        <ram:IncludedSupplyChainTradeLineItem>
+            <ram:AssociatedDocumentLineDocument>
+                <ram:LineID>1</ram:LineID>
+                <ram:IncludedNote>
+                    <ram:Content>Scratch on box</ram:Content>
+                </ram:IncludedNote>
+            </ram:AssociatedDocumentLineDocument>
+            <ram:SpecifiedTradeProduct>
+                <ram:GlobalID schemeID="GTIN">1234567890124</ram:GlobalID>
+                <ram:SellerAssignedID>JB007</ram:SellerAssignedID>
+                <ram:Name>Labtop computer</ram:Name>
+                <ram:Description>Processor: Intel Core 2 Duo SU9400 LV (1.4GHz). RAM:
+				3MB. Screen 1440x900</ram:Description>
+                <ram:ApplicableProductCharacteristic>
+                    <ram:Description>Color</ram:Description>
+                    <ram:Value>black</ram:Value>
+                </ram:ApplicableProductCharacteristic>
+                <ram:DesignatedProductClassification>
+                    <ram:ClassCode listID="UNSPSC">12344321</ram:ClassCode>
+                </ram:DesignatedProductClassification>
+                <ram:DesignatedProductClassification>
+                    <ram:ClassCode listID="CPV">65434568</ram:ClassCode>
+                </ram:DesignatedProductClassification>
+            </ram:SpecifiedTradeProduct>
+            <ram:SpecifiedLineTradeAgreement>
+                <ram:BuyerOrderReferencedDocument>
+                    <ram:LineID>1</ram:LineID>
+                </ram:BuyerOrderReferencedDocument>
+                <ram:NetPriceProductTradePrice>
+                    <ram:ChargeAmount currencyID="EUR">1273</ram:ChargeAmount>
+                </ram:NetPriceProductTradePrice>
+            </ram:SpecifiedLineTradeAgreement>
+            <ram:SpecifiedLineTradeDelivery>
+                <ram:BilledQuantity unitCode="C62">1</ram:BilledQuantity>
+            </ram:SpecifiedLineTradeDelivery>
+            <ram:SpecifiedLineTradeSettlement>
+                <ram:ApplicableTradeTax>
+                    <ram:TypeCode>VAT</ram:TypeCode>
+                    <ram:CategoryCode>S</ram:CategoryCode>
+                    <ram:RateApplicablePercent>20</ram:RateApplicablePercent>
+                </ram:ApplicableTradeTax>
+                <ram:SpecifiedTradeSettlementLineMonetarySummation>
+                    <ram:LineTotalAmount currencyID="EUR">1273</ram:LineTotalAmount>
+                </ram:SpecifiedTradeSettlementLineMonetarySummation>
+                <ram:ReceivableSpecifiedTradeAccountingAccount>
+                    <ram:ID>BookingCode001</ram:ID>
+                </ram:ReceivableSpecifiedTradeAccountingAccount>
+            </ram:SpecifiedLineTradeSettlement>
+        </ram:IncludedSupplyChainTradeLineItem>
+        <ram:IncludedSupplyChainTradeLineItem>
+            <ram:AssociatedDocumentLineDocument>
+                <ram:LineID>2</ram:LineID>
+                <ram:IncludedNote>
+                    <ram:Content>Cover is slightly damaged.</ram:Content>
+                </ram:IncludedNote>
+            </ram:AssociatedDocumentLineDocument>
+            <ram:SpecifiedTradeProduct>
+                <ram:GlobalID schemeID="GTIN">1234567890125</ram:GlobalID>
+                <ram:SellerAssignedID>JB008</ram:SellerAssignedID>
+                <ram:Name>Returned "Advanced computing" book</ram:Name>
+                <ram:DesignatedProductClassification>
+                    <ram:ClassCode listID="UNSPSC">32344324</ram:ClassCode>
+                </ram:DesignatedProductClassification>
+                <ram:DesignatedProductClassification>
+                    <ram:ClassCode listID="CPV">65434567</ram:ClassCode>
+                </ram:DesignatedProductClassification>
+            </ram:SpecifiedTradeProduct>
+            <ram:SpecifiedLineTradeAgreement>
+                <ram:BuyerOrderReferencedDocument>
+                    <ram:LineID>5</ram:LineID>
+                </ram:BuyerOrderReferencedDocument>
+                <ram:NetPriceProductTradePrice>
+                    <ram:ChargeAmount currencyID="EUR">3.96</ram:ChargeAmount>
+                </ram:NetPriceProductTradePrice>
+            </ram:SpecifiedLineTradeAgreement>
+            <ram:SpecifiedLineTradeDelivery>
+                <ram:BilledQuantity unitCode="C62">-1</ram:BilledQuantity>
+            </ram:SpecifiedLineTradeDelivery>
+            <ram:SpecifiedLineTradeSettlement>
+                <ram:ApplicableTradeTax>
+                    <ram:TypeCode>VAT</ram:TypeCode>
+                    <ram:CategoryCode>AA</ram:CategoryCode>
+                    <ram:RateApplicablePercent>10</ram:RateApplicablePercent>
+                </ram:ApplicableTradeTax>
+                <ram:SpecifiedTradeSettlementLineMonetarySummation>
+                    <ram:LineTotalAmount currencyID="EUR">-3.96</ram:LineTotalAmount>
+                </ram:SpecifiedTradeSettlementLineMonetarySummation>
+            </ram:SpecifiedLineTradeSettlement>
+        </ram:IncludedSupplyChainTradeLineItem>
+        <ram:IncludedSupplyChainTradeLineItem>
+            <ram:AssociatedDocumentLineDocument>
+                <ram:LineID>3</ram:LineID>
+            </ram:AssociatedDocumentLineDocument>
+            <ram:SpecifiedTradeProduct>
+                <ram:GlobalID schemeID="GTIN">1234567890126</ram:GlobalID>
+                <ram:SellerAssignedID>JB009</ram:SellerAssignedID>
+                <ram:Name>"Computing for dummies" book</ram:Name>
+                <ram:DesignatedProductClassification>
+                    <ram:ClassCode listID="UNSPSC">32344324</ram:ClassCode>
+                </ram:DesignatedProductClassification>
+                <ram:DesignatedProductClassification>
+                    <ram:ClassCode listID="CPV">65434566</ram:ClassCode>
+                </ram:DesignatedProductClassification>
+            </ram:SpecifiedTradeProduct>
+            <ram:SpecifiedLineTradeAgreement>
+                <ram:BuyerOrderReferencedDocument>
+                    <ram:LineID>3</ram:LineID>
+                </ram:BuyerOrderReferencedDocument>
+                <ram:NetPriceProductTradePrice>
+                    <ram:ChargeAmount currencyID="EUR">2.48</ram:ChargeAmount>
+                </ram:NetPriceProductTradePrice>
+            </ram:SpecifiedLineTradeAgreement>
+            <ram:SpecifiedLineTradeDelivery>
+                <ram:BilledQuantity unitCode="C62">2</ram:BilledQuantity>
+            </ram:SpecifiedLineTradeDelivery>
+            <ram:SpecifiedLineTradeSettlement>
+                <ram:ApplicableTradeTax>
+                    <ram:TypeCode>VAT</ram:TypeCode>
+                    <ram:CategoryCode>AA</ram:CategoryCode>
+                    <ram:RateApplicablePercent>10</ram:RateApplicablePercent>
+                </ram:ApplicableTradeTax>
+                <ram:SpecifiedTradeSettlementLineMonetarySummation>
+                    <ram:LineTotalAmount currencyID="EUR">4.96</ram:LineTotalAmount>
+                </ram:SpecifiedTradeSettlementLineMonetarySummation>
+            </ram:SpecifiedLineTradeSettlement>
+        </ram:IncludedSupplyChainTradeLineItem>
+        <ram:IncludedSupplyChainTradeLineItem>
+            <ram:AssociatedDocumentLineDocument>
+                <ram:LineID>4</ram:LineID>
+            </ram:AssociatedDocumentLineDocument>
+            <ram:SpecifiedTradeProduct>
+                <ram:GlobalID schemeID="GTIN">1234567890127</ram:GlobalID>
+                <ram:SellerAssignedID>JB010</ram:SellerAssignedID>
+                <ram:Name>Returned IBM 5150 desktop</ram:Name>
+                <ram:DesignatedProductClassification>
+                    <ram:ClassCode listID="UNSPSC">12344322</ram:ClassCode>
+                </ram:DesignatedProductClassification>
+                <ram:DesignatedProductClassification>
+                    <ram:ClassCode listID="CPV">65434565</ram:ClassCode>
+                </ram:DesignatedProductClassification>
+            </ram:SpecifiedTradeProduct>
+            <ram:SpecifiedLineTradeAgreement>
+                <ram:BuyerOrderReferencedDocument>
+                    <ram:LineID>2</ram:LineID>
+                </ram:BuyerOrderReferencedDocument>
+                <ram:NetPriceProductTradePrice>
+                    <ram:ChargeAmount currencyID="EUR">25</ram:ChargeAmount>
+                </ram:NetPriceProductTradePrice>
+            </ram:SpecifiedLineTradeAgreement>
+            <ram:SpecifiedLineTradeDelivery>
+                <ram:BilledQuantity unitCode="C62">-1</ram:BilledQuantity>
+            </ram:SpecifiedLineTradeDelivery>
+            <ram:SpecifiedLineTradeSettlement>
+                <ram:ApplicableTradeTax>
+                    <ram:TypeCode>VAT</ram:TypeCode>
+                    <ram:CategoryCode>E</ram:CategoryCode>
+                    <ram:RateApplicablePercent>0</ram:RateApplicablePercent>
+                </ram:ApplicableTradeTax>
+                <ram:SpecifiedTradeSettlementLineMonetarySummation>
+                    <ram:LineTotalAmount currencyID="EUR">-25</ram:LineTotalAmount>
+                </ram:SpecifiedTradeSettlementLineMonetarySummation>
+            </ram:SpecifiedLineTradeSettlement>
+        </ram:IncludedSupplyChainTradeLineItem>
+        <ram:IncludedSupplyChainTradeLineItem>
+            <ram:AssociatedDocumentLineDocument>
+                <ram:LineID>5</ram:LineID>
+            </ram:AssociatedDocumentLineDocument>
+            <ram:SpecifiedTradeProduct>
+                <ram:GlobalID schemeID="GTIN">1234567890128</ram:GlobalID>
+                <ram:SellerAssignedID>JB011</ram:SellerAssignedID>
+                <ram:Name>Network cable</ram:Name>
+                <ram:ApplicableProductCharacteristic>
+                    <ram:Description>Type</ram:Description>
+                    <ram:Value>Cat5</ram:Value>
+                </ram:ApplicableProductCharacteristic>
+                <ram:DesignatedProductClassification>
+                    <ram:ClassCode listID="UNSPSC">12344325</ram:ClassCode>
+                </ram:DesignatedProductClassification>
+                <ram:DesignatedProductClassification>
+                    <ram:ClassCode listID="CPV">65434564</ram:ClassCode>
+                </ram:DesignatedProductClassification>
+            </ram:SpecifiedTradeProduct>
+            <ram:SpecifiedLineTradeAgreement>
+                <ram:BuyerOrderReferencedDocument>
+                    <ram:LineID>4</ram:LineID>
+                </ram:BuyerOrderReferencedDocument>
+                <ram:NetPriceProductTradePrice>
+                    <ram:ChargeAmount currencyID="EUR">0.75</ram:ChargeAmount>
+                </ram:NetPriceProductTradePrice>
+            </ram:SpecifiedLineTradeAgreement>
+            <ram:SpecifiedLineTradeDelivery>
+                <ram:BilledQuantity unitCode="C62">250</ram:BilledQuantity>
+            </ram:SpecifiedLineTradeDelivery>
+            <ram:SpecifiedLineTradeSettlement>
+                <ram:ApplicableTradeTax>
+                    <ram:TypeCode>VAT</ram:TypeCode>
+                    <ram:CategoryCode>S</ram:CategoryCode>
+                    <ram:RateApplicablePercent>20</ram:RateApplicablePercent>
+                </ram:ApplicableTradeTax>
+                <ram:SpecifiedTradeSettlementLineMonetarySummation>
+                    <ram:LineTotalAmount currencyID="EUR">187.5</ram:LineTotalAmount>
+                </ram:SpecifiedTradeSettlementLineMonetarySummation>
+                <ram:ReceivableSpecifiedTradeAccountingAccount>
+                    <ram:ID>BookingCode002</ram:ID>
+                </ram:ReceivableSpecifiedTradeAccountingAccount>
+            </ram:SpecifiedLineTradeSettlement>
+        </ram:IncludedSupplyChainTradeLineItem>
+        <ram:ApplicableHeaderTradeAgreement>
+            <ram:SellerTradeParty>
+                <ram:ID schemeID="ZZZ">Supp123</ram:ID>
+                <ram:Name>Salescompany ltd.</ram:Name>
+                <ram:SpecifiedLegalOrganization>
+                    <ram:ID schemeID="CVR">5402697509</ram:ID>
+                    <ram:TradingBusinessName>The Sellercompany Incorporated</ram:TradingBusinessName>
+                    <ram:PostalTradeAddress>
+                        <ram:CityName>Big city</ram:CityName>
+                        <ram:CountryID>DK</ram:CountryID>
+                        <ram:CountrySubDivisionName>RegionA</ram:CountrySubDivisionName>
+                    </ram:PostalTradeAddress>
+                </ram:SpecifiedLegalOrganization>
+                <ram:PostalTradeAddress>
+                    <ram:PostcodeCode>54321</ram:PostcodeCode>
+                    <ram:LineOne>Main street</ram:LineOne>
+                    <ram:LineTwo>Suite 123</ram:LineTwo>
+                    <ram:CityName>Big city</ram:CityName>
+                    <ram:CountryID>DK</ram:CountryID>
+                </ram:PostalTradeAddress>
+                <ram:URIUniversalCommunication>
+                    <ram:URIID schemeID="GLN">1234567890123</ram:URIID>
+                </ram:URIUniversalCommunication>
+                <ram:SpecifiedTaxRegistration>
+                    <ram:ID schemeID="VA">DK12345</ram:ID>
+                </ram:SpecifiedTaxRegistration>
+            </ram:SellerTradeParty>
+            <ram:BuyerTradeParty>
+                <ram:ID schemeID="ZZZ">345KS5324</ram:ID>
+                <ram:Name>Buyercompany ltd</ram:Name>
+                <ram:SpecifiedLegalOrganization>
+                    <ram:ID schemeID="ZZZ">5645342123</ram:ID>
+                    <ram:TradingBusinessName>The buyercompany inc.</ram:TradingBusinessName>
+                    <ram:PostalTradeAddress>
+                        <ram:CityName>Mainplace</ram:CityName>
+                        <ram:CountryID>BE</ram:CountryID>
+                        <ram:CountrySubDivisionName>RegionB</ram:CountrySubDivisionName>
+                    </ram:PostalTradeAddress>
+                </ram:SpecifiedLegalOrganization>
+                <ram:PostalTradeAddress>
+                    <ram:PostcodeCode>101</ram:PostcodeCode>
+                    <ram:LineOne>Anystreet</ram:LineOne>
+                    <ram:LineTwo>Back door</ram:LineTwo>
+                    <ram:CityName>Anytown</ram:CityName>
+                    <ram:CountryID>BE</ram:CountryID>
+                    <ram:CountrySubDivisionName>RegionB</ram:CountrySubDivisionName>
+                </ram:PostalTradeAddress>
+                <ram:URIUniversalCommunication>
+                    <ram:URIID schemeID="GLN">1234567987654</ram:URIID>
+                </ram:URIUniversalCommunication>
+                <ram:SpecifiedTaxRegistration>
+                    <ram:ID schemeID="VA">BE54321</ram:ID>
+                </ram:SpecifiedTaxRegistration>
+            </ram:BuyerTradeParty>
+            <ram:BuyerOrderReferencedDocument>
+                <ram:IssuerAssignedID>123</ram:IssuerAssignedID>
+            </ram:BuyerOrderReferencedDocument>
+            <ram:ContractReferencedDocument>
+                <ram:IssuerAssignedID>Contract321</ram:IssuerAssignedID>
+            </ram:ContractReferencedDocument>
+            <ram:AdditionalReferencedDocument>
+                <ram:IssuerAssignedID>Doc1</ram:IssuerAssignedID>
+                <ram:URIID>http://www.suppliersite.eu/sheet001.html</ram:URIID>
+            </ram:AdditionalReferencedDocument>
+            <ram:AdditionalReferencedDocument>
+                <ram:IssuerAssignedID>Doc2</ram:IssuerAssignedID>
+                <ram:AttachmentBinaryObject mimeCode="application/pdf">UjBsR09EbGhjZ0dTQUxNQUFBUUNBRU1tQ1p0dU1GUXhEUzhi</ram:AttachmentBinaryObject>
+            </ram:AdditionalReferencedDocument>
+        </ram:ApplicableHeaderTradeAgreement>
+        <ram:ApplicableHeaderTradeDelivery>
+            <ram:ShipToTradeParty>
+                <ram:ID schemeID="GLN">6754238987648</ram:ID>
+                <ram:PostalTradeAddress>
+                    <ram:PostcodeCode>523427</ram:PostcodeCode>
+                    <ram:LineOne>Deliverystreet</ram:LineOne>
+                    <ram:LineTwo>Side door</ram:LineTwo>
+                    <ram:CityName>DeliveryCity</ram:CityName>
+                    <ram:CountryID>BE</ram:CountryID>
+                    <ram:CountrySubDivisionName>RegionC</ram:CountrySubDivisionName>
+                </ram:PostalTradeAddress>
+            </ram:ShipToTradeParty>
+            <ram:ActualDeliverySupplyChainEvent>
+                <ram:OccurrenceDateTime>
+                    <udt:DateTimeString format="102">20091215</udt:DateTimeString>
+                </ram:OccurrenceDateTime>
+            </ram:ActualDeliverySupplyChainEvent>
+        </ram:ApplicableHeaderTradeDelivery>
+        <ram:ApplicableHeaderTradeSettlement>
+            <ram:PaymentReference>Payref1</ram:PaymentReference>
+            <ram:InvoiceCurrencyCode>EUR</ram:InvoiceCurrencyCode>
+            <ram:PayeeTradeParty>
+                <ram:ID schemeID="GLN">098740918237</ram:ID>
+                <ram:Name>Ebeneser Scrooge Inc.</ram:Name>
+                <ram:SpecifiedLegalOrganization>
+                    <ram:ID schemeID="UK:CH">6411982340</ram:ID>
+                </ram:SpecifiedLegalOrganization>
+            </ram:PayeeTradeParty>
+            <ram:SpecifiedTradeSettlementPaymentMeans>
+                <ram:TypeCode>31</ram:TypeCode>
+                <ram:PayeePartyCreditorFinancialAccount>
+                    <ram:IBANID>DK1212341234123412</ram:IBANID>
+                </ram:PayeePartyCreditorFinancialAccount>
+            </ram:SpecifiedTradeSettlementPaymentMeans>
+            <ram:ApplicableTradeTax>
+                <ram:CalculatedAmount currencyID="EUR">292.1</ram:CalculatedAmount>
+                <ram:TypeCode>S</ram:TypeCode>
+                <ram:BasisAmount currencyID="EUR">1460.5</ram:BasisAmount>
+            </ram:ApplicableTradeTax>
+            <ram:ApplicableTradeTax>
+                <ram:CalculatedAmount currencyID="EUR">0.1</ram:CalculatedAmount>
+                <ram:TypeCode>AA</ram:TypeCode>
+                <ram:BasisAmount currencyID="EUR">1</ram:BasisAmount>
+            </ram:ApplicableTradeTax>
+            <ram:ApplicableTradeTax>
+                <ram:CalculatedAmount currencyID="EUR">0</ram:CalculatedAmount>
+                <ram:TypeCode>E</ram:TypeCode>
+                <ram:ExemptionReason>Exempt New Means of Transport</ram:ExemptionReason>
+                <ram:BasisAmount currencyID="EUR">-25</ram:BasisAmount>
+                <ram:ExemptionReasonCode>AAM</ram:ExemptionReasonCode>
+            </ram:ApplicableTradeTax>
+            <ram:BillingSpecifiedPeriod>
+                <ram:StartDateTime>
+                    <udt:DateTimeString format="102">20091101</udt:DateTimeString>
+                </ram:StartDateTime>
+                <ram:EndDateTime>
+                    <udt:DateTimeString format="102">20091130</udt:DateTimeString>
+                </ram:EndDateTime>
+            </ram:BillingSpecifiedPeriod>
+            <ram:SpecifiedTradeAllowanceCharge>
+                <ram:ChargeIndicator>
+                    <udt:Indicator>true</udt:Indicator>
+                </ram:ChargeIndicator>
+                <ram:ActualAmount>100</ram:ActualAmount>
+                <ram:Reason>Packing cost</ram:Reason>
+            </ram:SpecifiedTradeAllowanceCharge>
+            <ram:SpecifiedTradeAllowanceCharge>
+                <ram:ChargeIndicator>
+                    <udt:Indicator>false</udt:Indicator>
+                </ram:ChargeIndicator>
+                <ram:ActualAmount>100</ram:ActualAmount>
+                <ram:Reason>Promotion discount</ram:Reason>
+            </ram:SpecifiedTradeAllowanceCharge>
+            <ram:SpecifiedTradePaymentTerms>
+                <ram:Description>Penalty percentage 10% from due date</ram:Description>
+                <ram:DueDateDateTime>
+                    <udt:DateTimeString format="102">20091231</udt:DateTimeString>
+                </ram:DueDateDateTime>
+            </ram:SpecifiedTradePaymentTerms>
+            <ram:SpecifiedTradeSettlementHeaderMonetarySummation>
+                <ram:LineTotalAmount currencyID="EUR">1436.5</ram:LineTotalAmount>
+                <ram:ChargeTotalAmount currencyID="EUR">100</ram:ChargeTotalAmount>
+                <ram:AllowanceTotalAmount currencyID="EUR">100</ram:AllowanceTotalAmount>
+                <ram:TaxBasisTotalAmount currencyID="EUR">1436.5</ram:TaxBasisTotalAmount>
+                <ram:TaxTotalAmount currencyID="EUR">292.20</ram:TaxTotalAmount>
+                <ram:RoundingAmount currencyID="EUR">0.30</ram:RoundingAmount>
+                <ram:GrandTotalAmount currencyID="EUR">1729</ram:GrandTotalAmount>
+                <ram:TotalPrepaidAmount currencyID="EUR">1000</ram:TotalPrepaidAmount>
+                <ram:DuePayableAmount currencyID="EUR">729</ram:DuePayableAmount>
+            </ram:SpecifiedTradeSettlementHeaderMonetarySummation>
+            <ram:ReceivableSpecifiedTradeAccountingAccount>
+                <ram:ID>Project cost code 123</ram:ID>
+            </ram:ReceivableSpecifiedTradeAccountingAccount>
+        </ram:ApplicableHeaderTradeSettlement>
+    </rsm:SupplyChainTradeTransaction>
+</rsm:CrossIndustryInvoice>

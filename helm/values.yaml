@@ -1,0 +1,9 @@
+service_name: ${HELM_RELEASE_NAME}
+service_url: ${SERVICE_URL}
+deployment_target: openshift
+docker_image: ${BUILD_REGISTRY_IMAGE}:${IMAGE_TAG_TO_BUILD}
+secret_name: ${REGISTRY_SECRET_NAME}
+imageCredentials:
+  registry: ${BUILD_REGISTRY}
+  username: ${BUILD_REGISTRY_USER}
+  password: ${BUILD_REGISTRY_PASSWORD}

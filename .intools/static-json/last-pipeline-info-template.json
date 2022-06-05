@@ -1,0 +1,40 @@
+{
+  "subgroups": [
+    {
+      "title": "summary",
+      "content": [
+        {
+          "type": "state",
+          "text": "Run by ${GITLAB_USER_NAME}",
+          "value": "success",
+          "endline": "<hr/>"
+        },
+        {
+          "type": "url",
+          "icon": "fa fa-wrench",
+          "text": "Last pipeline: #${CI_PIPELINE_ID}",
+          "value": "${CI_PIPELINE_URL}",
+          "endline": "<hr/>"
+        },
+        {
+          "type": "url",
+          "icon": "fa fa-square-o",
+          "text": "Last commit: ${CI_COMMIT_REF_SLUG}/${CI_COMMIT_SHORT_SHA}",
+          "value": "${CI_PROJECT_URL}/commit/${CI_COMMIT_SHA}",
+          "endline": "<hr/>"
+        }
+      ]
+    },
+    {
+      "title": "details",
+      "content": [
+        {
+          "type": "text",
+          "text": "Commit message",
+          "value": "${CI_COMMIT_MESSAGE}",
+          "endline": "<br/><br/>"
+        }
+      ]
+    }
+  ]
+}

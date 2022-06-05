@@ -1,0 +1,9 @@
+<settings>
+  <servers>
+    <server>
+      <id>maven-repository</id>
+      <username>${MAVEN_REPO_USER}</username>
+      <password>${MAVEN_REPO_PASSWORD}</password>
+    </server>
+  </servers>
+</settings>

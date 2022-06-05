@@ -1,0 +1,7 @@
+apiVersion: v1
+name: java-maven
+version: 0.0.1
+description: Java Maven Helm Chart
+keywords:
+  - java-maven
+  - dep

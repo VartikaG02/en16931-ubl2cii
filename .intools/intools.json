@@ -1,0 +1,102 @@
+{
+    "groups": [
+        {
+            "_id": "9e3c9a800000000000000300",
+            "name": "${CI_PROJECT_NAME}",
+            "dashboards": [
+                {
+                    "_id": "8e3c9a900000000000000300",
+                    "name": "Visual management",
+                    "connectors": [
+                        {
+                            "_id": "5e3c9a900000000000000301",
+                            "name": "Link to deployment",
+                            "slug_model": "static-json",
+                            "value": "deployment-info-template.json"
+                        },
+                        {
+                            "_id": "5e3c9a900000000000000302",
+                            "name": "Sonarqube Qualimetry",
+                            "slug_model": "connector-sonar",
+                            "refresh": "10",
+                            "parameters": {
+                                "project": "${CI_PROJECT_NAME}",
+                                "token": "${SONAR_TOKEN}",
+                                "url": "${SONAR_URL}"
+                            }
+                        },
+                        {
+                            "_id": "5e3c9a900000000000000303",
+                            "name": "GitLab TrafficLight",
+                            "slug_model": "connector-gitlab-trafficLight",
+                            "refresh": "10",
+                            "parameters": {
+                                "highlighting": "Primary",
+                                "project-id": "${CI_PROJECT_ID}",
+                                "token": "${RELEASE_ACCESS_TOKEN}",
+                                "url": "${CI_SERVER_URL}",
+                                "refs": "${CI_COMMIT_REF_NAME}"
+                            }
+                        },
+                        {
+                            "_id": "5e3c9a900000000000000304",
+                            "name": "Sonarqube Security",
+                            "slug_model": "connector-security-sonar",
+                            "refresh": "10",
+                            "parameters": {
+                                "project": "${CI_PROJECT_NAME}",
+                                "token": "${SONAR_TOKEN}",
+                                "url": "${SONAR_URL}",
+                                "blockers_display_mode" : "Threshold",
+                                "blockers_display_options": "threshold(green;0;red)",
+                                "high_display_mode": "Threshold",
+                                "high_display_options": "threshold(green;0;red)",
+                                "medium_display_mode": "Threshold",
+                                "medium_display_options": "threshold(green;0;red)",
+                                "low_display_mode": "Threshold",
+                                "low_display_options": "threshold(green;0;red)"
+                            }
+                        }
+                    ],
+                    "boxes": [
+                        {
+                            "_id": "5e3c9a900000000000000311",
+                            "border_color": "White",
+                            "title": "Link to deployment",
+                            "connector_id": "5e3c9a900000000000000301",
+                            "sizex": 6,
+                            "sizey": 4
+                        },
+                        {
+                            "_id": "5e3c9a900000000000000312",
+                            "border_color": "Red",
+                            "title": "Sonarqube Qualimetry",
+                            "connector_id": "5e3c9a900000000000000302",
+                            "sizex": 12,
+                            "sizey": 6,
+                            "row": 5
+                        },
+                        {
+                            "_id": "5e3c9a900000000000000313",
+                            "border_color": "White",
+                            "title": "GitLab TrafficLight",
+                            "connector_id": "5e3c9a900000000000000303",
+                            "sizex": 6,
+                            "sizey": 4,
+                            "col": 6
+                        },
+                        {
+                            "_id": "5e3c9a900000000000000314",
+                            "border_color": "Green",
+                            "title": "Sonarqube Security",
+                            "connector_id": "5e3c9a900000000000000304",
+                            "sizex": 6,
+                            "sizey": 10,
+                            "col": 12
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,51 @@
+include:
+  - project: "dep/library/ci-library"
+    ref: "production"
+    file: "main.rules.yml"
+
+# Add dedicated job to build the application and archive build result
+build-application:
+  image: ${CI_REGISTRY}/dep/library/devops-images/java-maven:3.8.1-jdk-11-slim
+  script:
+    - mvn package -Dmaven.test.skip
+  artifacts:
+    paths:
+      - target/
+
+test-application:
+  image: ${CI_REGISTRY}/dep/library/devops-images/java-maven:3.8.1-jdk-11-slim
+  stage: test-application
+  script:
+    - mvn verify
+    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% covered" }' target/site/jacoco/jacoco.csv
+  coverage: '/(\d+(\.\d+)? %) covered/'
+  artifacts:
+    when: always
+    paths:
+      - target/
+    reports:
+      junit: 
+        - target/surefire-reports/*.xml
+        - target/failsafe-reports/*.xml
+
+upload-artifact:
+  stage: deploy
+  image: ${CI_REGISTRY}/dep/library/devops-images/java-maven:3.8.1-jdk-11-slim
+  script:
+    - export MAVEN_REPO_USER=${UPLOAD_ARTIFACT_USERNAME:-$CI_DEPLOY_USER}
+    - export MAVEN_REPO_PASSWORD=${UPLOAD_ARTIFACT_PASSWORD:-$CI_DEPLOY_PASSWORD}
+    - envsubst '${MAVEN_REPO_USER},${MAVEN_REPO_PASSWORD}' <settings.xml > /dev/null
+    - mvn -Dmaven.test.skip deploy -s settings.xml
+  rules:
+    - if: '$UPLOAD_REPOSITORY_URL'
+
+# Configuration for Release bump
+bump-version:
+  variables:
+    PROJ_FILE_PATH: "pom.xml"   
+# Configuration for Auto tag    
+auto-tag:
+  variables:
+    PROJ_FILE_PATH: "pom.xml"
+
+

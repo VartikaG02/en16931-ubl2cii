@@ -1,0 +1,23 @@
+{
+    "subgroups": [{
+        "title": "Deployment Info",
+        "content": [{
+                "type": "trafficlight",
+                "value": "${DEPLOYMENT_COLOR}"
+            },
+            {
+                "type": "statistic",
+                "value": "${CI_PROJECT_NAME}",
+                "color": "default",
+                "subtitle": "Version : ${CI_COMMIT_REF_NAME}",
+                "size": "tiny",
+                "style": "wrap"
+            },
+            {
+                "type": "url",
+                "value": "${DEPLOYMENT_URL}",
+                "text": "Link to environment"
+            }
+        ]
+    }]
+}
