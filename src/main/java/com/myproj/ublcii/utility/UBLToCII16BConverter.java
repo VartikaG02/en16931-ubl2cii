@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.myproj.ublcii.utility;
+package com.soprasteria.ublcii.utility;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -32,7 +32,7 @@ import un.unece.uncefact.data.standard.unqualifieddatatype._100.TextType;
 /**
  * UBL to CII 16B converter.
  *
- * @author Vartika Gupta
+ * @author Vartika Rastogi
  */
 public class UBLToCII16BConverter {
 	private static final String dateFormat = "102";
@@ -53,7 +53,9 @@ public class UBLToCII16BConverter {
 		aEDT.setTypeCode(aUBLInvoice.getInvoiceTypeCodeValue());
 
 		// IssueDate
-		aEDT.setIssueDateTime(_parseDate(aUBLInvoice.getIssueDate().getValueLocal()));
+		if (aUBLInvoice.getIssueDate() != null) {
+			aEDT.setIssueDateTime(_parseDate(aUBLInvoice.getIssueDate().getValueLocal()));
+		}
 
 		// IncludedNote
 		if (!aUBLInvoice.getNote().isEmpty()) {
@@ -76,13 +78,17 @@ public class UBLToCII16BConverter {
 
 		// BuyerOrderReferencedDocument
 		final ReferencedDocumentType aRDT = new ReferencedDocumentType();
-		aRDT.setIssuerAssignedID(aUBLInvoice.getOrderReference().getID().getValue());
+		if (aUBLInvoice.getOrderReference() != null) {
+			aRDT.setIssuerAssignedID(aUBLInvoice.getOrderReference().getID().getValue());
+		}
 		aHTAT.setBuyerOrderReferencedDocument(aRDT);
 
 		// ContractReferencedDocument
 		if (!aUBLInvoice.getContractDocumentReference().isEmpty()) {
 			final ReferencedDocumentType aCRDT = new ReferencedDocumentType();
-			aCRDT.setIssuerAssignedID(aUBLInvoice.getContractDocumentReference().get(0).getID().getValue());
+			if (!aUBLInvoice.getContractDocumentReference().isEmpty()) {
+				aCRDT.setIssuerAssignedID(aUBLInvoice.getContractDocumentReference().get(0).getID().getValue());
+			}
 			aHTAT.setContractReferencedDocument(aCRDT);
 		}
 
@@ -152,13 +158,18 @@ public class UBLToCII16BConverter {
 			// SpecifiedTradeProduct
 			final TradeProductType aTPT = new TradeProductType();
 			final ItemType aIT = aILT.getItem();
-			aTPT.setGlobalID(_convertIDType(aIT.getStandardItemIdentification().getID().getSchemeID(),
-					aIT.getStandardItemIdentification().getIDValue()));
-			aTPT.setSellerAssignedID(aIT.getSellersItemIdentification().getIDValue());
+			if (aIT.getStandardItemIdentification() != null) {
+				aTPT.setGlobalID(_convertIDType(aIT.getStandardItemIdentification().getID().getSchemeID(),
+						aIT.getStandardItemIdentification().getIDValue()));
+			}
+
+			if (aIT.getSellersItemIdentification() != null) {
+				aTPT.setSellerAssignedID(aIT.getSellersItemIdentification().getIDValue());
+			}
 
 			aTPT.setName(_convertTextType(aIT.getNameValue()));
 
-			if (!aIT.getDescription().isEmpty() && aIT.getDescription().get(0) != null) {
+			if (!aIT.getDescription().isEmpty()) {
 				aTPT.setDescription(aIT.getDescription().get(0).getValue());
 			}
 
@@ -189,14 +200,16 @@ public class UBLToCII16BConverter {
 			final LineTradeAgreementType aLTAT = new LineTradeAgreementType();
 			// BuyerOrderReferencedDocument
 			final ReferencedDocumentType aRDT = new ReferencedDocumentType();
-			if (!aILT.getOrderLineReference().isEmpty() && aILT.getOrderLineReference().get(0) != null) {
+			if (!aILT.getOrderLineReference().isEmpty()) {
 				aRDT.setLineID(aILT.getOrderLineReference().get(0).getLineIDValue());
 			}
 
 			// NetPriceProductTradePrice
 			final TradePriceType aLTPT = new TradePriceType();
-			aLTPT.setChargeAmount(_convertAmountType(aILT.getPrice().getPriceAmount().getCurrencyID(),
-					aILT.getPrice().getPriceAmount().getValue()));
+			if (aILT.getPrice() != null && aILT.getPrice().getPriceAmount() != null) {
+				aLTPT.setChargeAmount(_convertAmountType(aILT.getPrice().getPriceAmount().getCurrencyID(),
+						aILT.getPrice().getPriceAmount().getValue()));
+			}
 
 			aLTAT.setBuyerOrderReferencedDocument(aRDT);
 			aLTAT.setNetPriceProductTradePrice(aLTPT);
@@ -221,8 +234,10 @@ public class UBLToCII16BConverter {
 				aLstTTT.add(aTTT);
 			}
 			final TradeSettlementLineMonetarySummationType aTSLMST = new TradeSettlementLineMonetarySummationType();
-			aTSLMST.setLineTotalAmount(_convertAmountType(aILT.getLineExtensionAmount().getCurrencyID(),
-					aILT.getLineExtensionAmount().getValue()));
+			if (aILT.getLineExtensionAmount() != null) {
+				aTSLMST.setLineTotalAmount(_convertAmountType(aILT.getLineExtensionAmount().getCurrencyID(),
+						aILT.getLineExtensionAmount().getValue()));
+			}
 
 			if (aILT.getAccountingCostValue() != null) {
 				final List<TradeAccountingAccountType> aLstTAATL = new ArrayList<>();
@@ -246,7 +261,11 @@ public class UBLToCII16BConverter {
 		final TradePartyType aTPT = new TradePartyType();
 		final List<IDType> aLstIT = new ArrayList<>();
 
-		if (!aUBLInvoice.getAccountingSupplierParty().getParty().getPartyIdentification().isEmpty()) {
+		if (aUBLInvoice.getAccountingSupplierParty() != null
+				&& aUBLInvoice.getAccountingSupplierParty().getParty() != null
+				&& !aUBLInvoice.getAccountingSupplierParty().getParty().getPartyIdentification().isEmpty()
+				&& aUBLInvoice.getAccountingSupplierParty().getParty().getPartyIdentification().get(0)
+						.getID() != null) {
 			aLstIT.add(_convertIDType(
 					aUBLInvoice.getAccountingSupplierParty().getParty().getPartyIdentification().get(0).getID()
 							.getSchemeID(),
@@ -255,49 +274,87 @@ public class UBLToCII16BConverter {
 			aTPT.setID(aLstIT);
 		}
 
-		if (!aUBLInvoice.getAccountingSupplierParty().getParty().getPartyName().isEmpty()) {
+		if (aUBLInvoice.getAccountingSupplierParty() != null
+				&& aUBLInvoice.getAccountingSupplierParty().getParty() != null
+				&& !aUBLInvoice.getAccountingSupplierParty().getParty().getPartyName().isEmpty()) {
 			aTPT.setName(aUBLInvoice.getAccountingSupplierParty().getParty().getPartyName().get(0).getNameValue());
 		}
 
-		if (!aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().isEmpty()) {
+		if (aUBLInvoice.getAccountingSupplierParty() != null
+				&& aUBLInvoice.getAccountingSupplierParty().getParty() != null
+				&& !aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().isEmpty()) {
 			final LegalOrganizationType aLOT = new LegalOrganizationType();
 
 			aLOT.setTradingBusinessName(aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
 					.getRegistrationNameValue());
-			aLOT.setID(_convertIDType(
-					aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0).getCompanyID()
-							.getSchemeID(),
-					aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
-							.getCompanyIDValue()));
+			if (aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
+					.getCompanyID() != null) {
+				aLOT.setID(_convertIDType(
+						aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0).getCompanyID()
+								.getSchemeID(),
+						aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
+								.getCompanyIDValue()));
+			}
 
 			final TradeAddressType aTAT = new TradeAddressType();
-			aTAT.setCityName(aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
-					.getRegistrationAddress().getCityName().getValue());
-			aTAT.setCountryID(aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
-					.getRegistrationAddress().getCountry().getIdentificationCode().getValue());
-			aTAT.setCountrySubDivisionName(_convertTextType(aUBLInvoice.getAccountingSupplierParty().getParty()
-					.getPartyLegalEntity().get(0).getRegistrationAddress().getCountrySubentity().getValue()));
+			if (aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
+					.getRegistrationAddress() != null) {
+				if (aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
+						.getRegistrationAddress().getCityName() != null) {
+					aTAT.setCityName(aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
+							.getRegistrationAddress().getCityName().getValue());
+				}
+				if (aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
+						.getRegistrationAddress().getCountry() != null
+						&& aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
+								.getRegistrationAddress().getCountry().getIdentificationCode() != null) {
+					aTAT.setCountryID(aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
+							.getRegistrationAddress().getCountry().getIdentificationCode().getValue());
+				}
+				if (aUBLInvoice.getAccountingSupplierParty().getParty().getPartyLegalEntity().get(0)
+						.getRegistrationAddress().getCountrySubentity() != null) {
+					aTAT.setCountrySubDivisionName(_convertTextType(aUBLInvoice.getAccountingSupplierParty().getParty()
+							.getPartyLegalEntity().get(0).getRegistrationAddress().getCountrySubentity().getValue()));
+				}
+			}
 			aLOT.setPostalTradeAddress(aTAT);
 
 			aTPT.setSpecifiedLegalOrganization(aLOT);
 		}
 
-		if (aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress() != null) {
+		if (aUBLInvoice.getAccountingSupplierParty() != null
+				&& aUBLInvoice.getAccountingSupplierParty().getParty() != null
+				&& aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress() != null) {
 			final TradeAddressType aTATR = new TradeAddressType();
-			aTATR.setPostcodeCode(
-					aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress().getPostalZone().getValue());
-			aTATR.setLineOne(
-					aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress().getStreetName().getValue());
-			aTATR.setLineTwo(aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress()
-					.getAdditionalStreetName().getValue());
-			aTATR.setCityName(
-					aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress().getCityName().getValue());
-			aTATR.setCountryID(aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress().getCountry()
-					.getIdentificationCode().getValue());
+			if (aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress().getPostalZone() != null) {
+				aTATR.setPostcodeCode(aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress()
+						.getPostalZone().getValue());
+			}
+			if (aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress().getStreetName() != null) {
+				aTATR.setLineOne(aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress().getStreetName()
+						.getValue());
+			}
+			if (aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress()
+					.getAdditionalStreetName() != null) {
+				aTATR.setLineTwo(aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress()
+						.getAdditionalStreetName().getValue());
+			}
+			if (aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress().getCityName() != null) {
+				aTATR.setCityName(aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress().getCityName()
+						.getValue());
+			}
+			if (aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress().getCountry() != null
+					&& aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress().getCountry()
+							.getIdentificationCode() != null) {
+				aTATR.setCountryID(aUBLInvoice.getAccountingSupplierParty().getParty().getPostalAddress().getCountry()
+						.getIdentificationCode().getValue());
+			}
 			aTPT.setPostalTradeAddress(aTATR);
 		}
 
-		if (aUBLInvoice.getAccountingSupplierParty().getParty().getEndpointID() != null) {
+		if (aUBLInvoice.getAccountingSupplierParty() != null
+				&& aUBLInvoice.getAccountingSupplierParty().getParty() != null
+				&& aUBLInvoice.getAccountingSupplierParty().getParty().getEndpointID() != null) {
 			final List<UniversalCommunicationType> aLstUCT = new ArrayList<>();
 			final UniversalCommunicationType aUCT = new UniversalCommunicationType();
 			aUCT.setURIID(
@@ -307,7 +364,9 @@ public class UBLToCII16BConverter {
 			aTPT.setURIUniversalCommunication(aLstUCT);
 		}
 
-		if (!aUBLInvoice.getAccountingSupplierParty().getParty().getPartyTaxScheme().isEmpty()) {
+		if (aUBLInvoice.getAccountingSupplierParty() != null
+				&& aUBLInvoice.getAccountingSupplierParty().getParty() != null
+				&& !aUBLInvoice.getAccountingSupplierParty().getParty().getPartyTaxScheme().isEmpty()) {
 			final List<TaxRegistrationType> aLstTRT = new ArrayList<>();
 			final TaxRegistrationType aTRT = new TaxRegistrationType();
 			aTRT.setID(_convertIDType(
@@ -324,7 +383,9 @@ public class UBLToCII16BConverter {
 	@Nonnull
 	private static TradePartyType _convertBuyerTradeParty(final InvoiceType aUBLInvoice) {
 		final TradePartyType aBTPT = new TradePartyType();
-		if (!aUBLInvoice.getAccountingCustomerParty().getParty().getPartyIdentification().isEmpty()) {
+		if (aUBLInvoice.getAccountingCustomerParty() != null
+				&& aUBLInvoice.getAccountingCustomerParty().getParty() != null
+				&& !aUBLInvoice.getAccountingCustomerParty().getParty().getPartyIdentification().isEmpty()) {
 			final List<IDType> aLstBIT = new ArrayList<>();
 			aLstBIT.add(_convertIDType(
 					aUBLInvoice.getAccountingCustomerParty().getParty().getPartyIdentification().get(0).getID()
@@ -334,25 +395,41 @@ public class UBLToCII16BConverter {
 			aBTPT.setID(aLstBIT);
 		}
 
-		aBTPT.setName(aUBLInvoice.getAccountingCustomerParty().getParty().getPartyName().get(0).getNameValue());
-
-		final LegalOrganizationType aBLOT = new LegalOrganizationType();
-		if (!aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().isEmpty()) {
-			aBLOT.setTradingBusinessName(aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity()
-					.get(0).getRegistrationNameValue());
-			aBLOT.setID(_convertIDType(
-					aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().get(0).getCompanyID()
-							.getSchemeID(),
-					aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().get(0)
-							.getCompanyIDValue()));
+		if (aUBLInvoice.getAccountingCustomerParty() != null
+				&& aUBLInvoice.getAccountingCustomerParty().getParty() != null
+				&& !aUBLInvoice.getAccountingCustomerParty().getParty().getPartyName().isEmpty()) {
+			aBTPT.setName(aUBLInvoice.getAccountingCustomerParty().getParty().getPartyName().get(0).getNameValue());
 		}
 
-		if (!aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().isEmpty()) {
+		final LegalOrganizationType aBLOT = new LegalOrganizationType();
+		if (aUBLInvoice.getAccountingCustomerParty() != null
+				&& aUBLInvoice.getAccountingCustomerParty().getParty() != null
+				&& !aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().isEmpty()) {
+			aBLOT.setTradingBusinessName(aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity()
+					.get(0).getRegistrationNameValue());
+			if (aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().get(0)
+					.getCompanyID() != null) {
+				aBLOT.setID(_convertIDType(
+						aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().get(0).getCompanyID()
+								.getSchemeID(),
+						aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().get(0)
+								.getCompanyIDValue()));
+			}
+		}
+
+		if (aUBLInvoice.getAccountingCustomerParty() != null
+				&& aUBLInvoice.getAccountingCustomerParty().getParty() != null
+				&& !aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().isEmpty()
+				&& aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().get(0)
+						.getRegistrationAddress() != null) {
 			final TradeAddressType aBTAT = new TradeAddressType();
 			aBTAT.setCityName(aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().get(0)
 					.getRegistrationAddress().getCityName().getValue());
-			aBTAT.setCountryID(aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().get(0)
-					.getRegistrationAddress().getCountry().getIdentificationCode().getValue());
+			if (aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().get(0)
+					.getRegistrationAddress().getCountry() != null) {
+				aBTAT.setCountryID(aUBLInvoice.getAccountingCustomerParty().getParty().getPartyLegalEntity().get(0)
+						.getRegistrationAddress().getCountry().getIdentificationCode().getValue());
+			}
 			aBTAT.setCountrySubDivisionName(_convertTextType(aUBLInvoice.getAccountingCustomerParty().getParty()
 					.getPartyLegalEntity().get(0).getRegistrationAddress().getCountrySubentity().getValue()));
 			aBLOT.setPostalTradeAddress(aBTAT);
@@ -360,24 +437,41 @@ public class UBLToCII16BConverter {
 
 		aBTPT.setSpecifiedLegalOrganization(aBLOT);
 
-		if (aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress() != null) {
+		if (aUBLInvoice.getAccountingCustomerParty() != null
+				&& aUBLInvoice.getAccountingCustomerParty().getParty() != null
+				&& aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress() != null) {
 			final TradeAddressType aBTATR = new TradeAddressType();
-			aBTATR.setPostcodeCode(
-					aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress().getPostalZone().getValue());
-			aBTATR.setLineOne(
-					aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress().getStreetName().getValue());
-			aBTATR.setLineTwo(aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress()
-					.getAdditionalStreetName().getValue());
-			aBTATR.setCityName(
-					aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress().getCityName().getValue());
-			aBTATR.setCountryID(aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress().getCountry()
-					.getIdentificationCode().getValue());
-			aBTATR.setCountrySubDivisionName(_convertTextType(aUBLInvoice.getAccountingCustomerParty().getParty()
-					.getPostalAddress().getCountrySubentity().getValue()));
+			if (aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress().getPostalZone() != null) {
+				aBTATR.setPostcodeCode(aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress()
+						.getPostalZone().getValue());
+			}
+			if (aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress().getStreetName() != null) {
+				aBTATR.setLineOne(aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress().getStreetName()
+						.getValue());
+			}
+			if (aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress()
+					.getAdditionalStreetName() != null) {
+				aBTATR.setLineTwo(aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress()
+						.getAdditionalStreetName().getValue());
+			}
+			if (aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress().getCityName() != null) {
+				aBTATR.setCityName(aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress().getCityName()
+						.getValue());
+			}
+			if (aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress().getCountry() != null) {
+				aBTATR.setCountryID(aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress().getCountry()
+						.getIdentificationCode().getValue());
+			}
+			if (aUBLInvoice.getAccountingCustomerParty().getParty().getPostalAddress().getCountrySubentity() != null) {
+				aBTATR.setCountrySubDivisionName(_convertTextType(aUBLInvoice.getAccountingCustomerParty().getParty()
+						.getPostalAddress().getCountrySubentity().getValue()));
+			}
 			aBTPT.setPostalTradeAddress(aBTATR);
 		}
 
-		if (aUBLInvoice.getAccountingCustomerParty().getParty().getEndpointID() != null) {
+		if (aUBLInvoice.getAccountingCustomerParty() != null
+				&& aUBLInvoice.getAccountingCustomerParty().getParty() != null
+				&& aUBLInvoice.getAccountingCustomerParty().getParty().getEndpointID() != null) {
 			final List<UniversalCommunicationType> aLstBUCT = new ArrayList<>();
 			final UniversalCommunicationType aBUCT = new UniversalCommunicationType();
 			aBUCT.setURIID(
@@ -387,7 +481,9 @@ public class UBLToCII16BConverter {
 			aBTPT.setURIUniversalCommunication(aLstBUCT);
 		}
 
-		if (!aUBLInvoice.getAccountingCustomerParty().getParty().getPartyTaxScheme().isEmpty()) {
+		if (aUBLInvoice.getAccountingCustomerParty() != null
+				&& aUBLInvoice.getAccountingCustomerParty().getParty() != null
+				&& !aUBLInvoice.getAccountingCustomerParty().getParty().getPartyTaxScheme().isEmpty()) {
 			final List<TaxRegistrationType> aLstBTRT = new ArrayList<>();
 			final TaxRegistrationType aBTRT = new TaxRegistrationType();
 			aBTRT.setID(_convertIDType(
@@ -406,32 +502,49 @@ public class UBLToCII16BConverter {
 		final HeaderTradeDeliveryType aHTDT = new HeaderTradeDeliveryType();
 		final TradePartyType aTPTHT = new TradePartyType();
 
-		if (aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getID() != null) {
+		if (!aUBLInvoice.getDelivery().isEmpty() && aUBLInvoice.getDelivery().get(0).getDeliveryLocation() != null
+				&& aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getID() != null) {
 			final List<IDType> aLstHTIT = new ArrayList<>();
 			aLstHTIT.add(_convertIDType(aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getID().getSchemeID(),
 					aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getIDValue()));
 			aTPTHT.setID(aLstHTIT);
 		}
 
-		if (aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress() != null) {
+		if (!aUBLInvoice.getDelivery().isEmpty() && aUBLInvoice.getDelivery().get(0).getDeliveryLocation() != null
+				&& aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress() != null) {
 			final TradeAddressType aHTTAT = new TradeAddressType();
-			aHTTAT.setPostcodeCode(
-					aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getPostalZone().getValue());
-			aHTTAT.setLineOne(
-					aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getStreetName().getValue());
-			aHTTAT.setLineTwo(aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress()
-					.getAdditionalStreetName().getValue());
-			aHTTAT.setCityName(
-					aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getCityName().getValue());
-			aHTTAT.setCountryID(aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getCountry()
-					.getIdentificationCode().getValue());
-			aHTTAT.setCountrySubDivisionName(_convertTextType(aUBLInvoice.getDelivery().get(0).getDeliveryLocation()
-					.getAddress().getCountrySubentityCodeValue()));
+			if (aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getPostalZone() != null) {
+				aHTTAT.setPostcodeCode(
+						aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getPostalZone().getValue());
+			}
+			if (aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getStreetName() != null) {
+				aHTTAT.setLineOne(
+						aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getStreetName().getValue());
+			}
+			if (aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getAdditionalStreetName() != null) {
+				aHTTAT.setLineTwo(aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress()
+						.getAdditionalStreetName().getValue());
+			}
+			if (aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getCityName() != null) {
+				aHTTAT.setCityName(
+						aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getCityName().getValue());
+			}
+			if (aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getCountry() != null
+					&& aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getCountry()
+							.getIdentificationCode() != null) {
+				aHTTAT.setCountryID(aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress().getCountry()
+						.getIdentificationCode().getValue());
+			}
+			if (aUBLInvoice.getDelivery().get(0).getDeliveryLocation().getAddress()
+					.getCountrySubentityCodeValue() != null) {
+				aHTTAT.setCountrySubDivisionName(_convertTextType(aUBLInvoice.getDelivery().get(0).getDeliveryLocation()
+						.getAddress().getCountrySubentityCodeValue()));
+			}
 			aTPTHT.setPostalTradeAddress(aHTTAT);
 			aHTDT.setShipToTradeParty(aTPTHT);
 		}
 
-		if (!aUBLInvoice.getDelivery().isEmpty()) {
+		if (!aUBLInvoice.getDelivery().isEmpty() && aUBLInvoice.getDelivery().get(0).getActualDeliveryDate() != null) {
 			final SupplyChainEventType aSCET = new SupplyChainEventType();
 			aSCET.setOccurrenceDateTime(
 					_parseDate(aUBLInvoice.getDelivery().get(0).getActualDeliveryDate().getValueLocal()));
@@ -443,7 +556,8 @@ public class UBLToCII16BConverter {
 	@Nonnull
 	private static HeaderTradeSettlementType _convertApplicableHeaderTradeSettlement(final InvoiceType aUBLInvoice) {
 		final HeaderTradeSettlementType aHTST = new HeaderTradeSettlementType();
-		if (!aUBLInvoice.getPaymentMeans().isEmpty()) {
+		if (!aUBLInvoice.getPaymentMeans().isEmpty()
+				&& !aUBLInvoice.getPaymentMeans().get(0).getPaymentID().isEmpty()) {
 			aHTST.setPaymentReference(
 					_convertTextType(aUBLInvoice.getPaymentMeans().get(0).getPaymentID().get(0).getValue()));
 		}
@@ -456,7 +570,9 @@ public class UBLToCII16BConverter {
 			final TradeSettlementPaymentMeansType aTSPMT = new TradeSettlementPaymentMeansType();
 			aTSPMT.setTypeCode(aUBLInvoice.getPaymentMeans().get(0).getPaymentMeansCodeValue());
 			final CreditorFinancialAccountType aCFAT = new CreditorFinancialAccountType();
-			aCFAT.setIBANID(aUBLInvoice.getPaymentMeans().get(0).getPayeeFinancialAccount().getIDValue());
+			if (aUBLInvoice.getPaymentMeans().get(0).getPayeeFinancialAccount() != null) {
+				aCFAT.setIBANID(aUBLInvoice.getPaymentMeans().get(0).getPayeeFinancialAccount().getIDValue());
+			}
 			aTSPMT.setPayeePartyCreditorFinancialAccount(aCFAT);
 			aLstTSPMT.add(aTSPMT);
 			aHTST.setSpecifiedTradeSettlementPaymentMeans(aLstTSPMT);
@@ -466,8 +582,12 @@ public class UBLToCII16BConverter {
 
 		if (!aUBLInvoice.getInvoicePeriod().isEmpty()) {
 			final SpecifiedPeriodType aSPT = new SpecifiedPeriodType();
-			aSPT.setStartDateTime(_parseDate(aUBLInvoice.getInvoicePeriod().get(0).getStartDate().getValueLocal()));
-			aSPT.setEndDateTime(_parseDate(aUBLInvoice.getInvoicePeriod().get(0).getEndDate().getValueLocal()));
+			if (aUBLInvoice.getInvoicePeriod().get(0).getStartDate() != null) {
+				aSPT.setStartDateTime(_parseDate(aUBLInvoice.getInvoicePeriod().get(0).getStartDate().getValueLocal()));
+			}
+			if (aUBLInvoice.getInvoicePeriod().get(0).getEndDate() != null) {
+				aSPT.setEndDateTime(_parseDate(aUBLInvoice.getInvoicePeriod().get(0).getEndDate().getValueLocal()));
+			}
 			aHTST.setBillingSpecifiedPeriod(aSPT);
 		}
 
@@ -478,7 +598,9 @@ public class UBLToCII16BConverter {
 
 		final List<TradeAccountingAccountType> aLstTAAT = new ArrayList<>();
 		final TradeAccountingAccountType aTAAT = new TradeAccountingAccountType();
-		aTAAT.setID(aUBLInvoice.getAccountingCost().getValue());
+		if (aUBLInvoice.getAccountingCost() != null) {
+			aTAAT.setID(aUBLInvoice.getAccountingCost().getValue());
+		}
 		aLstTAAT.add(aTAAT);
 		aHTST.setReceivableSpecifiedTradeAccountingAccount(aLstTAAT);
 
@@ -488,7 +610,7 @@ public class UBLToCII16BConverter {
 	@Nonnull
 	private static TradePartyType _convertPayeeTradeParty(final InvoiceType aUBLInvoice) {
 		final TradePartyType aSTTPT = new TradePartyType();
-		if (!aUBLInvoice.getPayeeParty().getPartyIdentification().isEmpty()) {
+		if (aUBLInvoice.getPayeeParty() != null && !aUBLInvoice.getPayeeParty().getPartyIdentification().isEmpty()) {
 			final List<IDType> aLstSIT = new ArrayList<>();
 			aLstSIT.add(
 					_convertIDType(aUBLInvoice.getPayeeParty().getPartyIdentification().get(0).getID().getSchemeID(),
@@ -496,9 +618,11 @@ public class UBLToCII16BConverter {
 			aSTTPT.setID(aLstSIT);
 		}
 
-		aSTTPT.setName(aUBLInvoice.getPayeeParty().getPartyName().get(0).getName().getValue());
+		if (aUBLInvoice.getPayeeParty() != null && !aUBLInvoice.getPayeeParty().getPartyName().isEmpty()) {
+			aSTTPT.setName(aUBLInvoice.getPayeeParty().getPartyName().get(0).getName().getValue());
+		}
 
-		if (!aUBLInvoice.getPayeeParty().getPartyLegalEntity().isEmpty()) {
+		if (aUBLInvoice.getPayeeParty() != null && !aUBLInvoice.getPayeeParty().getPartyLegalEntity().isEmpty()) {
 			final LegalOrganizationType aSTLOT = new LegalOrganizationType();
 			aSTLOT.setID(_convertIDType(
 					aUBLInvoice.getPayeeParty().getPartyLegalEntity().get(0).getCompanyID().getSchemeID(),
@@ -512,37 +636,57 @@ public class UBLToCII16BConverter {
 	private static TradeSettlementHeaderMonetarySummationType _convertSpecifiedTradeSettlementHeaderMonetarySummation(
 			final InvoiceType aUBLInvoice) {
 		final TradeSettlementHeaderMonetarySummationType aTSHMST = new TradeSettlementHeaderMonetarySummationType();
-		aTSHMST.setLineTotalAmount(
-				_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getLineExtensionAmount().getCurrencyID(),
-						aUBLInvoice.getLegalMonetaryTotal().getLineExtensionAmount().getValue()));
-		aTSHMST.setChargeTotalAmount(
-				_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getChargeTotalAmount().getCurrencyID(),
-						aUBLInvoice.getLegalMonetaryTotal().getChargeTotalAmount().getValue()));
-		aTSHMST.setAllowanceTotalAmount(
-				_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getAllowanceTotalAmount().getCurrencyID(),
+		if (aUBLInvoice.getLegalMonetaryTotal() != null) {
+			if (aUBLInvoice.getLegalMonetaryTotal().getLineExtensionAmount() != null) {
+				aTSHMST.setLineTotalAmount(
+						_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getLineExtensionAmount().getCurrencyID(),
+								aUBLInvoice.getLegalMonetaryTotal().getLineExtensionAmount().getValue()));
+			}
+			if (aUBLInvoice.getLegalMonetaryTotal().getChargeTotalAmount() != null) {
+				aTSHMST.setChargeTotalAmount(
+						_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getChargeTotalAmount().getCurrencyID(),
+								aUBLInvoice.getLegalMonetaryTotal().getChargeTotalAmount().getValue()));
+			}
+			if (aUBLInvoice.getLegalMonetaryTotal().getAllowanceTotalAmount() != null) {
+				aTSHMST.setAllowanceTotalAmount(_convertAmountType(
+						aUBLInvoice.getLegalMonetaryTotal().getAllowanceTotalAmount().getCurrencyID(),
 						aUBLInvoice.getLegalMonetaryTotal().getAllowanceTotalAmount().getValue()));
-		aTSHMST.setTaxBasisTotalAmount(
-				_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getTaxExclusiveAmount().getCurrencyID(),
-						aUBLInvoice.getLegalMonetaryTotal().getTaxExclusiveAmount().getValue()));
+			}
+			if (aUBLInvoice.getLegalMonetaryTotal().getTaxExclusiveAmount() != null) {
+				aTSHMST.setTaxBasisTotalAmount(
+						_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getTaxExclusiveAmount().getCurrencyID(),
+								aUBLInvoice.getLegalMonetaryTotal().getTaxExclusiveAmount().getValue()));
+			}
+		}
 
-		if (!aUBLInvoice.getTaxTotal().isEmpty()) {
+		if (!aUBLInvoice.getTaxTotal().isEmpty() && aUBLInvoice.getTaxTotal().get(0).getTaxAmount() != null) {
 			aTSHMST.setTaxTotalAmount(
 					_convertAmountType(aUBLInvoice.getTaxTotal().get(0).getTaxAmount().getCurrencyID(),
 							aUBLInvoice.getTaxTotal().get(0).getTaxAmount().getValue()));
 		}
 
-		aTSHMST.setRoundingAmount(
-				_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getPayableRoundingAmount().getCurrencyID(),
+		if (aUBLInvoice.getLegalMonetaryTotal() != null) {
+			if (aUBLInvoice.getLegalMonetaryTotal().getPayableRoundingAmount() != null) {
+				aTSHMST.setRoundingAmount(_convertAmountType(
+						aUBLInvoice.getLegalMonetaryTotal().getPayableRoundingAmount().getCurrencyID(),
 						aUBLInvoice.getLegalMonetaryTotal().getPayableRoundingAmount().getValue()));
-		aTSHMST.setGrandTotalAmount(
-				_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getTaxInclusiveAmount().getCurrencyID(),
-						aUBLInvoice.getLegalMonetaryTotal().getTaxInclusiveAmount().getValue()));
-		aTSHMST.setTotalPrepaidAmount(
-				_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getPrepaidAmount().getCurrencyID(),
-						aUBLInvoice.getLegalMonetaryTotal().getPrepaidAmount().getValue()));
-		aTSHMST.setDuePayableAmount(
-				_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getPayableAmount().getCurrencyID(),
-						aUBLInvoice.getLegalMonetaryTotal().getPayableAmount().getValue()));
+			}
+			if (aUBLInvoice.getLegalMonetaryTotal().getTaxInclusiveAmount() != null) {
+				aTSHMST.setGrandTotalAmount(
+						_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getTaxInclusiveAmount().getCurrencyID(),
+								aUBLInvoice.getLegalMonetaryTotal().getTaxInclusiveAmount().getValue()));
+			}
+			if (aUBLInvoice.getLegalMonetaryTotal().getPrepaidAmount() != null) {
+				aTSHMST.setTotalPrepaidAmount(
+						_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getPrepaidAmount().getCurrencyID(),
+								aUBLInvoice.getLegalMonetaryTotal().getPrepaidAmount().getValue()));
+			}
+			if (aUBLInvoice.getLegalMonetaryTotal().getPayableAmount() != null) {
+				aTSHMST.setDuePayableAmount(
+						_convertAmountType(aUBLInvoice.getLegalMonetaryTotal().getPayableAmount().getCurrencyID(),
+								aUBLInvoice.getLegalMonetaryTotal().getPayableAmount().getValue()));
+			}
+		}
 
 		return aTSHMST;
 	}
@@ -553,13 +697,19 @@ public class UBLToCII16BConverter {
 		for (final TaxTotalType aTTT : aUBLInvoice.getTaxTotal()) {
 			if (!aTTT.getTaxSubtotal().isEmpty()) {
 				final TradeTaxType aTTTST = new TradeTaxType();
-				aTTTST.setCalculatedAmount(
-						_convertAmountType(aTTT.getTaxSubtotal().get(0).getTaxAmount().getCurrencyID(),
-								aTTT.getTaxSubtotal().get(0).getTaxAmount().getValue()));
-				aTTTST.setTypeCode(aTTT.getTaxSubtotal().get(0).getTaxCategory().getIDValue());
-				aTTTST.setBasisAmount(
-						_convertAmountType(aTTT.getTaxSubtotal().get(0).getTaxableAmount().getCurrencyID(),
-								aTTT.getTaxSubtotal().get(0).getTaxableAmount().getValue()));
+				if (aTTT.getTaxSubtotal().get(0).getTaxAmount() != null) {
+					aTTTST.setCalculatedAmount(
+							_convertAmountType(aTTT.getTaxSubtotal().get(0).getTaxAmount().getCurrencyID(),
+									aTTT.getTaxSubtotal().get(0).getTaxAmount().getValue()));
+				}
+				if (aTTT.getTaxSubtotal().get(0).getTaxCategory() != null) {
+					aTTTST.setTypeCode(aTTT.getTaxSubtotal().get(0).getTaxCategory().getIDValue());
+				}
+				if (aTTT.getTaxSubtotal().get(0).getTaxableAmount() != null) {
+					aTTTST.setBasisAmount(
+							_convertAmountType(aTTT.getTaxSubtotal().get(0).getTaxableAmount().getCurrencyID(),
+									aTTT.getTaxSubtotal().get(0).getTaxableAmount().getValue()));
+				}
 
 				if (aTTT.getTaxSubtotal().get(0).getTaxCategory() != null) {
 					if (!aTTT.getTaxSubtotal().get(0).getTaxCategory().getTaxExemptionReason().isEmpty()) {
@@ -582,9 +732,14 @@ public class UBLToCII16BConverter {
 		final List<TradePaymentTermsType> aLstTPTT = new ArrayList<>();
 		for (final PaymentTermsType aPTT : aUBLInvoice.getPaymentTerms()) {
 			final TradePaymentTermsType aTPTT = new TradePaymentTermsType();
-			aTPTT.setDescription(_convertTextType(aPTT.getNote().get(0).getValue()));
-			aTPTT.setDueDateDateTime(
-					_parseDate(aUBLInvoice.getPaymentMeans().get(0).getPaymentDueDate().getValueLocal()));
+			if (!aPTT.getNote().isEmpty()) {
+				aTPTT.setDescription(_convertTextType(aPTT.getNote().get(0).getValue()));
+			}
+			if (!aUBLInvoice.getPaymentMeans().isEmpty()
+					&& aUBLInvoice.getPaymentMeans().get(0).getPaymentDueDate() != null) {
+				aTPTT.setDueDateDateTime(
+						_parseDate(aUBLInvoice.getPaymentMeans().get(0).getPaymentDueDate().getValueLocal()));
+			}
 			aLstTPTT.add(aTPTT);
 		}
 		return aLstTPTT;
@@ -605,7 +760,9 @@ public class UBLToCII16BConverter {
 			aLstATDC.add(aATCD);
 			aTDCT.setActualAmount(aLstATDC);
 
-			aTDCT.setReason(aACT.getAllowanceChargeReason().get(0).getValue());
+			if (!aACT.getAllowanceChargeReason().isEmpty()) {
+				aTDCT.setReason(aACT.getAllowanceChargeReason().get(0).getValue());
+			}
 			aLstTDCT.add(aTDCT);
 		}
 		return aLstTDCT;
@@ -618,12 +775,12 @@ public class UBLToCII16BConverter {
 		for (final DocumentReferenceType aDRT : aUBLInvoice.getAdditionalDocumentReference()) {
 			final ReferencedDocumentType aURDT = new ReferencedDocumentType();
 			aURDT.setIssuerAssignedID(aDRT.getID().getValue());
-			if (aDRT.getAttachment().getExternalReference() != null
+			if (aDRT.getAttachment() != null && aDRT.getAttachment().getExternalReference() != null
 					&& aDRT.getAttachment().getExternalReference().getURI() != null) {
 				aURDT.setURIID(aDRT.getAttachment().getExternalReference().getURI().getValue());
 			}
 			final BinaryObjectType aBOT = new BinaryObjectType();
-			if (aDRT.getAttachment().getEmbeddedDocumentBinaryObject() != null) {
+			if (aDRT.getAttachment() != null && aDRT.getAttachment().getEmbeddedDocumentBinaryObject() != null) {
 				aBOT.setMimeCode(aDRT.getAttachment().getEmbeddedDocumentBinaryObject().getMimeCode());
 				aBOT.setValue(aDRT.getAttachment().getEmbeddedDocumentBinaryObject().getValue());
 			}
