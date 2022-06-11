@@ -597,11 +597,11 @@ public class UBLToCII16BConverter {
 				_convertSpecifiedTradeSettlementHeaderMonetarySummation(aUBLInvoice));
 
 		final List<TradeAccountingAccountType> aLstTAAT = new ArrayList<>();
-		final TradeAccountingAccountType aTAAT = new TradeAccountingAccountType();
 		if (aUBLInvoice.getAccountingCost() != null) {
+			final TradeAccountingAccountType aTAAT = new TradeAccountingAccountType();
 			aTAAT.setID(aUBLInvoice.getAccountingCost().getValue());
+			aLstTAAT.add(aTAAT);
 		}
-		aLstTAAT.add(aTAAT);
 		aHTST.setReceivableSpecifiedTradeAccountingAccount(aLstTAAT);
 
 		return aHTST;
